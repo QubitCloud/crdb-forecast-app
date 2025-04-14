@@ -32,9 +32,11 @@
 
     <div id="error" style="text-align:center; color:red;"></div>
 
-    <div style="text-align:center; font-weight:bold; font-size:18px; margin-top:20px;">
-        {{ forecast }}
-    </div>
+    {% if forecast_result %}
+        <div style="text-align:center; font-weight:bold; font-size:18px; margin-top:20px;">
+            {{ forecast_result }}
+        </div>
+    {% endif %}
 
     <script>
         function validateForm() {
