@@ -3,4 +3,3 @@ jinja2
 uvicorn
 pandas
 prophet
-plotly
