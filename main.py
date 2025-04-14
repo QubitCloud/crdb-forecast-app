@@ -7,7 +7,7 @@ from datetime import datetime
 import os
 
 app = FastAPI()
-templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "../templates"))
+templates = Jinja2Templates(directory="templates")
 
 def prepare_data():
     df = pd.read_csv('CRDB_Share_Prices.csv')
