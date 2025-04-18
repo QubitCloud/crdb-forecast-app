@@ -1,42 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>CRDB Forecast</title>
-    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f7f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #444;
+        }
+
+        select, input, button {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .result {
+            margin-top: 30px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .error {
+            text-align: center;
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1 style="text-align:center;">CRDB Share Price Forecast</h1>
-    <form method="post" style="text-align:center; margin-bottom:20px;" onsubmit="return validateForm()">
-        <label for="month">Month: </label>
-        <select name="month" id="month" required>
-            <option value="">--Select Month--</option>
-            <option value="Jan">Jan</option>
-            <option value="Feb">Feb</option>
-            <option value="Mar">Mar</option>
-            <option value="Apr">Apr</option>
-            <option value="May">May</option>
-            <option value="Jun">Jun</option>
-            <option value="Jul">Jul</option>
-            <option value="Aug">Aug</option>
-            <option value="Sep">Sep</option>
-            <option value="Oct">Oct</option>
-            <option value="Nov">Nov</option>
-            <option value="Dec">Dec</option>
-        </select>
+    <div class="container">
+        <h1>🔮 CRDB Share Price Forecast</h1>
+        <form method="post" onsubmit="return validateForm()">
+            <label for="month">Month:</label>
+            <select name="month" id="month" required>
+                <option value="">--Select Month--</option>
+                <option value="Jan">Jan</option>
+                <option value="Feb">Feb</option>
+                <option value="Mar">Mar</option>
+                <option value="Apr">Apr</option>
+                <option value="May">May</option>
+                <option value="Jun">Jun</option>
+                <option value="Jul">Jul</option>
+                <option value="Aug">Aug</option>
+                <option value="Sep">Sep</option>
+                <option value="Oct">Oct</option>
+                <option value="Nov">Nov</option>
+                <option value="Dec">Dec</option>
+            </select>
 
-        <label for="year">Year: </label>
-        <input type="number" name="year" id="year" min="2021" max="2100" required>
+            <label for="year">Year:</label>
+            <input type="number" name="year" id="year" min="2021" max="2100" required>
 
-        <button type="submit">Forecast</button>
-    </form>
+            <button type="submit">Forecast</button>
+        </form>
 
-    <div id="error" style="text-align:center; color:red;"></div>
+        <div class="error" id="error"></div>
 
-    {% if forecast_result %}
-        <div style="text-align:center; font-weight:bold; font-size:18px; margin-top:20px;">
-            {{ forecast_result }}
-        </div>
-    {% endif %}
+        {% if forecast_result %}
+            <div class="result">
+                {{ forecast_result | safe }}
+            </div>
+        {% endif %}
+    </div>
 
     <script>
         function validateForm() {
@@ -44,9 +110,9 @@
             const year = document.getElementById("year").value;
             const errorDiv = document.getElementById("error");
 
-            if (!month || !year || parseInt(year) < 2021 || parseInt(year) > 2100) {
-                errorDiv.textContent = "Invalid format, try again.";
-                setTimeout(() => errorDiv.textContent = "", 3000);
+            if (!month || !year || year < 2021 || year > 2100) {
+                errorDiv.textContent = "🚫 Please select a valid month and year.";
+                setTimeout(() => errorDiv.textContent = "", 4000);
                 return false;
             }
 

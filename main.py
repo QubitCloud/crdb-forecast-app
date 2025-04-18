@@ -9,8 +9,8 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 def prepare_data():
-    df = pd.read_csv('CRDB_Share_Prices.csv')
-    df['ds'] = pd.to_datetime(df['Month'], format='%b-%y')
+    df = pd.read_csv("CRDB_Share_Prices.csv")
+    df['ds'] = pd.to_datetime(df['Month'] + " " + df['Year'].astype(str), format='%b-%y')
     df['y'] = df['Average CRDB Share Price (TSh)']
     return df[['ds', 'y']]
 
@@ -39,9 +39,10 @@ def post_forecast(request: Request, month: str = Form(...), year: int = Form(...
     try:
         price = get_forecast_price(month, year)
         if price is None:
-            result = f"No forecast data available for {month} {year}."
+            result = f"No forecast available for {month} {year}."
         else:
-            result = f"Estimated CRDB share price for {month} {year} is TSh {price}."
+            result = f"📈 Estimated CRDB share price for <b>{month} {year}</b>: <span style='color:green;'>TSh {price}</span>"
     except:
-        result = "Invalid format, try again."
+        result = "⚠️ Invalid input. Please try again."
+
     return templates.TemplateResponse("index.html", {"request": request, "forecast_result": result})
